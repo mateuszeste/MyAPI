@@ -1,0 +1,694 @@
+{
+  "nodes": [
+    {
+      "id": "g_core",
+      "type": "group",
+      "x": -100,
+      "y": -50,
+      "width": 820,
+      "height": 310,
+      "label": "Core Library",
+      "color": "5"
+    },
+    {
+      "id": "n_types",
+      "type": "text",
+      "x": -70,
+      "y": 10,
+      "width": 360,
+      "height": 230,
+      "color": "5",
+      "text": "# `lib/types.ts`\n\nShared type definitions:\n- `ProviderStatus` — ok | warning | critical | error | loading\n- `UsageBar` — label, used%, reset timers\n- `ProviderData` — unified API response shape\n- `ClaudeUsageResponse` — Claude API shape\n- `OpenRouterKeyResponse` — OpenRouter API shape\n\n**Imported by**: every API route, page.tsx, AntigravityCard, ProviderCard"
+    },
+    {
+      "id": "n_utils",
+      "type": "text",
+      "x": 330,
+      "y": 10,
+      "width": 360,
+      "height": 230,
+      "color": "5",
+      "text": "# `lib/utils.ts`\n\nPure utility functions:\n- `timeUntil()` — countdown from ISO date\n- `shortTimeLocal()` — format to HH:MM\n- `timeAgo()` — relative past time\n- `utilizationStatus()` — % → status thresholds\n- `createProviderUsageSnapshot()` — snapshot for tracking\n- `parseProviderUsageSnapshot()` — deserialize from localStorage\n- `didProviderUsageIncrease()` — compare snapshots\n- `resolveProviderUsageTracking()` — determine last-used timestamp\n\n**Imports**: `lib/types.ts`"
+    },
+    {
+      "id": "g_entry",
+      "type": "group",
+      "x": 900,
+      "y": -50,
+      "width": 820,
+      "height": 310,
+      "label": "App Entry Points",
+      "color": "4"
+    },
+    {
+      "id": "n_layout",
+      "type": "text",
+      "x": 930,
+      "y": 10,
+      "width": 360,
+      "height": 230,
+      "color": "4",
+      "text": "# `app/layout.tsx`\n\nRoot layout (server component).\n\n**Renders**:\n- `ThemeProvider` — wraps entire app\n- `DynamicBackground` — animated dark-mode dots\n\n**Provides**: metadata (title, description), `<html>` shell with `suppressHydrationWarning`"
+    },
+    {
+      "id": "n_page",
+      "type": "text",
+      "x": 1330,
+      "y": 10,
+      "width": 360,
+      "height": 230,
+      "color": "4",
+      "text": "# `app/page.tsx` (\"use client\")\n\nDashboard — main orchestrator.\n\n**Renders**: `AntigravityCard`, `ProviderTile`×4 → `ProviderCard`, `Logo`, `PromoWidget`, `ThemeToggle`, `SyncedAgo`\n\n**Data flow**: Each `ProviderTile` uses SWR to fetch `/api/credits/{id}` every 5 min\n\n**Usage tracking**: Persists snapshots + last-used timestamps to localStorage per provider\n\n**Imports**: lib/types, lib/utils, 5 components"
+    },
+    {
+      "id": "g_middleware",
+      "type": "group",
+      "x": 1900,
+      "y": -50,
+      "width": 440,
+      "height": 310,
+      "label": "Security",
+      "color": "1"
+    },
+    {
+      "id": "n_middleware",
+      "type": "text",
+      "x": 1920,
+      "y": 10,
+      "width": 400,
+      "height": 230,
+      "color": "1",
+      "text": "# `middleware.ts`\n\nHTTP Basic Auth gate.\n\n- Checks `ADMIN_PASSWORD` + `ADMIN_USERNAME` env vars\n- Uses `timingSafeEqual()` for constant-time comparison\n- Bypasses auth in dev if password not set\n- **Fail-closed**: returns 500 in production if `ADMIN_PASSWORD` missing\n- Matches all routes except `_next/static`, `_next/image`, `favicon.ico`"
+    },
+    {
+      "id": "g_components",
+      "type": "group",
+      "x": -100,
+      "y": 460,
+      "width": 2440,
+      "height": 310,
+      "label": "UI Components",
+      "color": "6"
+    },
+    {
+      "id": "n_providercard",
+      "type": "text",
+      "x": -70,
+      "y": 520,
+      "width": 320,
+      "height": 220,
+      "color": "6",
+      "text": "# `ProviderCard.tsx`\n\nRenders a single provider tile.\n\n**Sub-components**: `UsageBar`, `CreditDisplay`, `SharedCreditsDisplay`, `UsageFooter`\n\n**Two modes**: normal (dark card) + `featured` (green Antigravity card)\n\n**Imports**: lib/types, lib/utils\n**Props**: `ProviderData`, `style?`, `featured?`"
+    },
+    {
+      "id": "n_antigravitycard",
+      "type": "text",
+      "x": 290,
+      "y": 520,
+      "width": 320,
+      "height": 220,
+      "color": "6",
+      "text": "# `AntigravityCard.tsx`\n\nMulti-account provider card.\n\n**Features**: Account tab switcher, per-account localStorage tracking\n\n**Data**: SWR fetches `/api/credits/antigravity?accountIndex=N`\n\n**Renders**: `ProviderCard` with `featured={true}`\n\n**Imports**: lib/types, lib/utils, ProviderCard"
+    },
+    {
+      "id": "n_logo",
+      "type": "text",
+      "x": 650,
+      "y": 520,
+      "width": 250,
+      "height": 220,
+      "color": "6",
+      "text": "# `Logo.tsx`\n\nSVG brand logo.\n\n- Inline SVG with `var(--green)` + `currentColor`\n- Props: `size?`, `className?`\n- No external deps"
+    },
+    {
+      "id": "n_promowidget",
+      "type": "text",
+      "x": 940,
+      "y": 520,
+      "width": 300,
+      "height": 220,
+      "color": "6",
+      "text": "# `PromoWidget.tsx`\n\nPeak/off-peak indicator for Claude.\n\n**Logic**: `getClaudePromoState()` — checks if current UTC time is within weekday 13:00-19:00 peak\n\n**Exports**: `getClaudePromoState()` (for testing), `PromoWidget`\n\n- Auto-updates every 1s\n- Pauses when tab hidden\n- No external deps"
+    },
+    {
+      "id": "n_themetoggle",
+      "type": "text",
+      "x": 1280,
+      "y": 520,
+      "width": 250,
+      "height": 220,
+      "color": "6",
+      "text": "# `ThemeToggle.tsx`\n\nDark/light mode switcher.\n\n- Uses `useTheme()` from `next-themes`\n- Animated sun/moon icons\n- SSR-safe (mounted guard)\n\n**Depends on**: ThemeProvider context"
+    },
+    {
+      "id": "n_themeprovider",
+      "type": "text",
+      "x": 1570,
+      "y": 520,
+      "width": 250,
+      "height": 220,
+      "color": "6",
+      "text": "# `ThemeProvider.tsx`\n\nThin wrapper around `next-themes` `ThemeProvider`.\n\n- Provides `useTheme()` context to all children\n- Config: `attribute=\"class\"`, `defaultTheme=\"system\"`, `enableSystem`\n\n**External dep**: `next-themes`"
+    },
+    {
+      "id": "n_dynamicbg",
+      "type": "text",
+      "x": 1860,
+      "y": 520,
+      "width": 300,
+      "height": 220,
+      "color": "6",
+      "text": "# `DynamicBackground.tsx`\n\nConditional animated background.\n\n- Only renders in **dark mode** (checks `resolvedTheme`)\n- SSR-safe (mounted guard)\n- Renders `DottedGlowBackground` with green glow\n\n**Imports**: next-themes, DottedGlowBackground"
+    },
+    {
+      "id": "n_dottedglow",
+      "type": "text",
+      "x": 2200,
+      "y": 520,
+      "width": 110,
+      "height": 220,
+      "color": "6",
+      "text": "# `DottedGlowBackground.tsx`\n\nCanvas-based dot animation.\n\n- ResizeObserver for responsive canvas\n- Per-dot phase/speed animation\n- Configurable: gap, radius, colors, speed\n\nNo deps"
+    },
+    {
+      "id": "g_api",
+      "type": "group",
+      "x": -100,
+      "y": 970,
+      "width": 2440,
+      "height": 310,
+      "label": "API Routes (Server-Side)",
+      "color": "2"
+    },
+    {
+      "id": "n_api_claude",
+      "type": "text",
+      "x": -70,
+      "y": 1030,
+      "width": 350,
+      "height": 220,
+      "color": "2",
+      "text": "# `api/credits/claude`\n\nFetches Claude Pro usage.\n\n**Env**: `CLAUDE_ORG_ID`, `CLAUDE_SESSION_COOKIE`, `CLAUDE_DEVICE_ID`\n\n**Calls**: `claude.ai/api/organizations/{orgId}/usage`\n\n**Returns**: 2 usage bars (5h session + weekly), status from max utilization\n\n**Imports**: lib/types, lib/utils"
+    },
+    {
+      "id": "n_api_openrouter",
+      "type": "text",
+      "x": 310,
+      "y": 1030,
+      "width": 350,
+      "height": 220,
+      "color": "2",
+      "text": "# `api/credits/openrouter`\n\nFetches OpenRouter key info.\n\n**Env**: `OPENROUTER_API_KEY`\n\n**Calls**: `openrouter.ai/api/v1/auth/key`\n\n**Returns**: credits remaining/total in USD, status from remaining %\n\n**Imports**: lib/types only (no utils)"
+    },
+    {
+      "id": "n_api_openai",
+      "type": "text",
+      "x": 690,
+      "y": 1030,
+      "width": 350,
+      "height": 220,
+      "color": "2",
+      "text": "# `api/credits/openai`\n\nFetches ChatGPT Codex usage.\n\n**Env**: `CHATGPT_AUTH_TOKEN`, `CHATGPT_SESSION_COOKIE`\n\n**Calls**: `chatgpt.com/backend-api/wham/usage`\n\n**Returns**: 2 usage bars (Codex monthly + Code review monthly)\n\n**Imports**: lib/types, lib/utils"
+    },
+    {
+      "id": "n_api_antigravity",
+      "type": "text",
+      "x": 1070,
+      "y": 1030,
+      "width": 380,
+      "height": 220,
+      "color": "2",
+      "text": "# `api/credits/antigravity`\n\nMulti-account Google Cloud Code + Gemini credits.\n\n**Env**: `ANTIGRAVITY_ACCOUNTS` (JSON), `ANTIGRAVITY_PROJECT_ID`, `GOOGLE_CLIENT_ID/SECRET`, `GOOGLE_ONE_COOKIES`\n\n**Calls**: Google OAuth2 token exchange → `cloudcode-pa.googleapis.com` + `one.google.com`\n\n**Returns**: model quotas as usage bars + shared Gemini credits + account emails\n\n**Imports**: lib/types, lib/utils"
+    },
+    {
+      "id": "n_api_ollama",
+      "type": "text",
+      "x": 1480,
+      "y": 1030,
+      "width": 350,
+      "height": 220,
+      "color": "2",
+      "text": "# `api/credits/ollama`\n\nScrapes Ollama Cloud usage from HTML.\n\n**Env**: `OLLAMA_SESSION_COOKIE`\n\n**Calls**: `ollama.com/settings` (HTML scraping)\n\n**Returns**: 2 usage bars (session + weekly)\n\n**Fragile**: Regex-based HTML parsing — may break on site changes\n\n**Imports**: lib/types, lib/utils"
+    },
+    {
+      "id": "n_api_kilocode",
+      "type": "text",
+      "x": 1870,
+      "y": 1030,
+      "width": 350,
+      "height": 220,
+      "color": "2",
+      "text": "# `api/credits/kilocode`\n\nFetches Kilo Code credit blocks.\n\n**Env**: `KILO_SESSION_COOKIE`\n\n**Calls**: `app.kilo.ai/api/trpc/user.getCreditBlocks`\n\n**Returns**: credits remaining/total in USD (micro-USD conversion), utilization status\n\n**Imports**: lib/types, lib/utils"
+    },
+    {
+      "id": "g_external",
+      "type": "group",
+      "x": -100,
+      "y": 1480,
+      "width": 2440,
+      "height": 260,
+      "label": "External Services",
+      "color": "3"
+    },
+    {
+      "id": "n_ext_claude",
+      "type": "text",
+      "x": -70,
+      "y": 1530,
+      "width": 350,
+      "height": 180,
+      "color": "3",
+      "text": "# Claude.ai API\n\n`claude.ai/api/organizations/{orgId}/usage`\n\nSession cookie auth. Returns 5h + 7d utilization percentages."
+    },
+    {
+      "id": "n_ext_openrouter",
+      "type": "text",
+      "x": 310,
+      "y": 1530,
+      "width": 350,
+      "height": 180,
+      "color": "3",
+      "text": "# OpenRouter API\n\n`openrouter.ai/api/v1/auth/key`\n\nBearer token auth. Returns usage + limit in USD."
+    },
+    {
+      "id": "n_ext_openai",
+      "type": "text",
+      "x": 690,
+      "y": 1530,
+      "width": 350,
+      "height": 180,
+      "color": "3",
+      "text": "# ChatGPT Wham API\n\n`chatgpt.com/backend-api/wham/usage`\n\nBearer + cookie auth. Returns rate limit windows (Codex + Code Review)."
+    },
+    {
+      "id": "n_ext_google",
+      "type": "text",
+      "x": 1070,
+      "y": 1530,
+      "width": 380,
+      "height": 180,
+      "color": "3",
+      "text": "# Google APIs\n\n1. `oauth2.googleapis.com/token` — refresh token → access token\n2. `cloudcode-pa.googleapis.com` — model quotas\n3. `one.google.com/ai/activity` — Gemini AI credits (HTML scraping)"
+    },
+    {
+      "id": "n_ext_ollama",
+      "type": "text",
+      "x": 1480,
+      "y": 1530,
+      "width": 350,
+      "height": 180,
+      "color": "3",
+      "text": "# Ollama.com\n\n`ollama.com/settings`\n\nCookie auth. Returns HTML page — usage extracted via regex."
+    },
+    {
+      "id": "n_ext_kilocode",
+      "type": "text",
+      "x": 1870,
+      "y": 1530,
+      "width": 350,
+      "height": 180,
+      "color": "3",
+      "text": "# Kilo.ai API\n\n`app.kilo.ai/api/trpc/user.getCreditBlocks`\n\nCookie auth. Returns credit blocks with micro-USD balances."
+    }
+  ],
+  "edges": [
+    {
+      "id": "e_layout_themeprovider",
+      "fromNode": "n_layout",
+      "fromSide": "bottom",
+      "toNode": "n_themeprovider",
+      "toSide": "top",
+      "label": "renders",
+      "color": "4"
+    },
+    {
+      "id": "e_layout_dynamicbg",
+      "fromNode": "n_layout",
+      "fromSide": "bottom",
+      "toNode": "n_dynamicbg",
+      "toSide": "top",
+      "label": "renders",
+      "color": "4"
+    },
+    {
+      "id": "e_page_antigravity",
+      "fromNode": "n_page",
+      "fromSide": "bottom",
+      "toNode": "n_antigravitycard",
+      "toSide": "top",
+      "label": "renders",
+      "color": "4"
+    },
+    {
+      "id": "e_page_providercard",
+      "fromNode": "n_page",
+      "fromSide": "bottom",
+      "toNode": "n_providercard",
+      "toSide": "top",
+      "label": "renders (via ProviderTile)",
+      "color": "4"
+    },
+    {
+      "id": "e_page_logo",
+      "fromNode": "n_page",
+      "fromSide": "bottom",
+      "toNode": "n_logo",
+      "toSide": "top",
+      "label": "renders",
+      "color": "4"
+    },
+    {
+      "id": "e_page_promo",
+      "fromNode": "n_page",
+      "fromSide": "bottom",
+      "toNode": "n_promowidget",
+      "toSide": "top",
+      "label": "renders",
+      "color": "4"
+    },
+    {
+      "id": "e_page_themetoggle",
+      "fromNode": "n_page",
+      "fromSide": "bottom",
+      "toNode": "n_themetoggle",
+      "toSide": "top",
+      "label": "renders",
+      "color": "4"
+    },
+    {
+      "id": "e_antigravity_providercard",
+      "fromNode": "n_antigravitycard",
+      "fromSide": "left",
+      "toNode": "n_providercard",
+      "toSide": "right",
+      "label": "renders (featured)",
+      "color": "6"
+    },
+    {
+      "id": "e_dynamicbg_dotted",
+      "fromNode": "n_dynamicbg",
+      "fromSide": "right",
+      "toNode": "n_dottedglow",
+      "toSide": "left",
+      "label": "renders",
+      "color": "6"
+    },
+    {
+      "id": "e_page_types",
+      "fromNode": "n_page",
+      "fromSide": "left",
+      "toNode": "n_types",
+      "toSide": "right",
+      "label": "imports ProviderData",
+      "color": "5"
+    },
+    {
+      "id": "e_page_utils",
+      "fromNode": "n_page",
+      "fromSide": "left",
+      "toNode": "n_utils",
+      "toSide": "right",
+      "label": "imports timeAgo, parseProviderUsageSnapshot, resolveProviderUsageTracking",
+      "color": "5"
+    },
+    {
+      "id": "e_providercard_types",
+      "fromNode": "n_providercard",
+      "fromSide": "top",
+      "toNode": "n_types",
+      "toSide": "bottom",
+      "label": "imports ProviderData",
+      "color": "5"
+    },
+    {
+      "id": "e_providercard_utils",
+      "fromNode": "n_providercard",
+      "fromSide": "top",
+      "toNode": "n_utils",
+      "toSide": "bottom",
+      "label": "imports shortTimeLocal, timeAgo",
+      "color": "5"
+    },
+    {
+      "id": "e_antigravity_types",
+      "fromNode": "n_antigravitycard",
+      "fromSide": "top",
+      "toNode": "n_types",
+      "toSide": "bottom",
+      "label": "imports ProviderData",
+      "color": "5"
+    },
+    {
+      "id": "e_antigravity_utils",
+      "fromNode": "n_antigravitycard",
+      "fromSide": "top",
+      "toNode": "n_utils",
+      "toSide": "bottom",
+      "label": "imports parseProviderUsageSnapshot, resolveProviderUsageTracking",
+      "color": "5"
+    },
+    {
+      "id": "e_utils_types",
+      "fromNode": "n_utils",
+      "fromSide": "left",
+      "toNode": "n_types",
+      "toSide": "right",
+      "label": "imports ProviderData, ProviderStatus",
+      "color": "5"
+    },
+    {
+      "id": "e_page_api_claude",
+      "fromNode": "n_page",
+      "fromSide": "bottom",
+      "toNode": "n_api_claude",
+      "toSide": "top",
+      "label": "SWR fetch",
+      "color": "2"
+    },
+    {
+      "id": "e_page_api_openrouter",
+      "fromNode": "n_page",
+      "fromSide": "bottom",
+      "toNode": "n_api_openrouter",
+      "toSide": "top",
+      "label": "SWR fetch",
+      "color": "2"
+    },
+    {
+      "id": "e_page_api_openai",
+      "fromNode": "n_page",
+      "fromSide": "bottom",
+      "toNode": "n_api_openai",
+      "toSide": "top",
+      "label": "SWR fetch",
+      "color": "2"
+    },
+    {
+      "id": "e_antigravity_api",
+      "fromNode": "n_antigravitycard",
+      "fromSide": "bottom",
+      "toNode": "n_api_antigravity",
+      "toSide": "top",
+      "label": "SWR fetch (with accountIndex)",
+      "color": "2"
+    },
+    {
+      "id": "e_page_api_ollama",
+      "fromNode": "n_page",
+      "fromSide": "bottom",
+      "toNode": "n_api_ollama",
+      "toSide": "top",
+      "label": "SWR fetch",
+      "color": "2"
+    },
+    {
+      "id": "e_page_api_kilocode",
+      "fromNode": "n_page",
+      "fromSide": "bottom",
+      "toNode": "n_api_kilocode",
+      "toSide": "top",
+      "label": "SWR fetch",
+      "color": "2"
+    },
+    {
+      "id": "e_api_claude_ext",
+      "fromNode": "n_api_claude",
+      "fromSide": "bottom",
+      "toNode": "n_ext_claude",
+      "toSide": "top",
+      "label": "fetch",
+      "color": "3"
+    },
+    {
+      "id": "e_api_openrouter_ext",
+      "fromNode": "n_api_openrouter",
+      "fromSide": "bottom",
+      "toNode": "n_ext_openrouter",
+      "toSide": "top",
+      "label": "fetch",
+      "color": "3"
+    },
+    {
+      "id": "e_api_openai_ext",
+      "fromNode": "n_api_openai",
+      "fromSide": "bottom",
+      "toNode": "n_ext_openai",
+      "toSide": "top",
+      "label": "fetch",
+      "color": "3"
+    },
+    {
+      "id": "e_api_antigravity_ext",
+      "fromNode": "n_api_antigravity",
+      "fromSide": "bottom",
+      "toNode": "n_ext_google",
+      "toSide": "top",
+      "label": "fetch (3 endpoints)",
+      "color": "3"
+    },
+    {
+      "id": "e_api_ollama_ext",
+      "fromNode": "n_api_ollama",
+      "fromSide": "bottom",
+      "toNode": "n_ext_ollama",
+      "toSide": "top",
+      "label": "fetch (HTML)",
+      "color": "3"
+    },
+    {
+      "id": "e_api_kilocode_ext",
+      "fromNode": "n_api_kilocode",
+      "fromSide": "bottom",
+      "toNode": "n_ext_kilocode",
+      "toSide": "top",
+      "label": "fetch",
+      "color": "3"
+    },
+    {
+      "id": "e_api_claude_types",
+      "fromNode": "n_api_claude",
+      "fromSide": "top",
+      "toNode": "n_types",
+      "toSide": "bottom",
+      "label": "imports",
+      "color": "5"
+    },
+    {
+      "id": "e_api_claude_utils",
+      "fromNode": "n_api_claude",
+      "fromSide": "top",
+      "toNode": "n_utils",
+      "toSide": "bottom",
+      "label": "imports timeUntil, utilizationStatus",
+      "color": "5"
+    },
+    {
+      "id": "e_api_openrouter_types",
+      "fromNode": "n_api_openrouter",
+      "fromSide": "top",
+      "toNode": "n_types",
+      "toSide": "bottom",
+      "label": "imports",
+      "color": "5"
+    },
+    {
+      "id": "e_api_openai_types",
+      "fromNode": "n_api_openai",
+      "fromSide": "top",
+      "toNode": "n_types",
+      "toSide": "bottom",
+      "label": "imports",
+      "color": "5"
+    },
+    {
+      "id": "e_api_openai_utils",
+      "fromNode": "n_api_openai",
+      "fromSide": "top",
+      "toNode": "n_utils",
+      "toSide": "bottom",
+      "label": "imports timeUntil, utilizationStatus",
+      "color": "5"
+    },
+    {
+      "id": "e_api_antigravity_types",
+      "fromNode": "n_api_antigravity",
+      "fromSide": "top",
+      "toNode": "n_types",
+      "toSide": "bottom",
+      "label": "imports",
+      "color": "5"
+    },
+    {
+      "id": "e_api_antigravity_utils",
+      "fromNode": "n_api_antigravity",
+      "fromSide": "top",
+      "toNode": "n_utils",
+      "toSide": "bottom",
+      "label": "imports timeUntil",
+      "color": "5"
+    },
+    {
+      "id": "e_api_ollama_types",
+      "fromNode": "n_api_ollama",
+      "fromSide": "top",
+      "toNode": "n_types",
+      "toSide": "bottom",
+      "label": "imports",
+      "color": "5"
+    },
+    {
+      "id": "e_api_ollama_utils",
+      "fromNode": "n_api_ollama",
+      "fromSide": "top",
+      "toNode": "n_utils",
+      "toSide": "bottom",
+      "label": "imports timeUntil, utilizationStatus",
+      "color": "5"
+    },
+    {
+      "id": "e_api_kilocode_types",
+      "fromNode": "n_api_kilocode",
+      "fromSide": "top",
+      "toNode": "n_types",
+      "toSide": "bottom",
+      "label": "imports",
+      "color": "5"
+    },
+    {
+      "id": "e_api_kilocode_utils",
+      "fromNode": "n_api_kilocode",
+      "fromSide": "top",
+      "toNode": "n_utils",
+      "toSide": "bottom",
+      "label": "imports utilizationStatus",
+      "color": "5"
+    },
+    {
+      "id": "e_themetoggle_themeprovider",
+      "fromNode": "n_themetoggle",
+      "fromSide": "left",
+      "toNode": "n_themeprovider",
+      "toSide": "right",
+      "label": "useTheme()",
+      "color": "6"
+    },
+    {
+      "id": "e_dynamicbg_themeprovider",
+      "fromNode": "n_dynamicbg",
+      "fromSide": "left",
+      "toNode": "n_themeprovider",
+      "toSide": "right",
+      "label": "useTheme()",
+      "color": "6"
+    },
+    {
+      "id": "e_middleware_all",
+      "fromNode": "n_middleware",
+      "fromSide": "left",
+      "toNode": "n_api_claude",
+      "toSide": "right",
+      "label": "guards all routes",
+      "color": "1"
+    }
+  ]
+}

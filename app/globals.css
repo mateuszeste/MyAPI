@@ -1,0 +1,120 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Spotify Light (High Contrast Inverse) */
+  --panel:   #ffffff;
+  --surface: #f6f6f6;
+  --border:  #e0e0e0;
+  --dim:     #d1d1d1;
+  --muted:   #535353;
+  --text:    #000000;
+  --bright:  #000000;
+  
+  /* Brand/Status (Unified) */
+  --green:   #1db954; /* Spotify Green variant for light */
+  --amber:   #ffa42b;
+  --red:     #e53e3e;
+  --blue:    #539df5;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-pill: 9999px;
+
+  --shadow-heavy: rgba(0,0,0,0.1) 0px 8px 24px;
+  --shadow-medium: rgba(0,0,0,0.06) 0px 4px 12px;
+
+  --scanline-opacity: 0.01;
+}
+
+.dark {
+  /* Spotify Dark (Canonical) */
+  --panel:   #121212;
+  --surface: #181818;
+  --border:  #1e1e1e;
+  --dim:     #3e3e3e;
+  --muted:   #b3b3b3;
+  --text:    #ffffff;
+  --bright:  #ffffff;
+
+  --green:   #1ed760; /* Spotify Green */
+  --amber:   #ffa42b;
+  --red:     #e53e3e;
+  --blue:    #539df5;
+
+  --shadow-heavy: rgba(0,0,0,0.5) 0px 8px 24px;
+  --shadow-medium: rgba(0,0,0,0.3) 0px 4px 12px;
+
+  --scanline-opacity: 0.02;
+}
+
+* { 
+  box-sizing: border-box; 
+  margin: 0; 
+  padding: 0; 
+}
+*:not(input):not(select):not(textarea):not(button) {
+  @media (prefers-reduced-motion: no-preference) {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+}
+
+html, body {
+  background: var(--panel);
+  color: var(--text);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: -0.015em;
+}
+
+/* Base Pill Button Style */
+.btn-pill {
+  border-radius: var(--radius-pill);
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transition: all 0.2s cubic-bezier(0.3, 0, 0, 1);
+}
+
+.btn-pill:hover {
+  transform: scale(1.04);
+}
+
+/* Base Card Style */
+.spotify-card {
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  transition: all 0.3s ease;
+}
+
+.spotify-card:hover {
+  background: var(--dim);
+}
+
+.mono { font-family: 'IBM Plex Mono', monospace; }
+
+/* Scrollbar Styling (Spotify Style) */
+::-webkit-scrollbar {
+  width: 12px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border: 3px solid transparent;
+  background-clip: padding-box;
+  border-radius: 6px;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+}
+

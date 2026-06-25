@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MyAPI Credentials</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      width: 320px;
+      padding: 16px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #1a1a1a;
+      color: #fff;
+    }
+    h1 {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: #fff;
+    }
+    .providers {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .provider {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 12px;
+      background: #2a2a2a;
+      border-radius: 8px;
+    }
+    .provider-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .provider-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4ade80;
+    }
+    .provider-dot.inactive {
+      background: #ef4444;
+    }
+    .provider-name {
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .provider-status {
+      font-size: 11px;
+      color: #888;
+    }
+    .copy-btn {
+      padding: 6px 12px;
+      background: #333;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .copy-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .copy-btn:not(:disabled):hover {
+      background: #444;
+    }
+    .instructions {
+      margin-top: 16px;
+      padding: 12px;
+      background: #222;
+      border-radius: 8px;
+      font-size: 11px;
+      line-height: 1.5;
+      color: #888;
+    }
+    .instructions strong {
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <h1>MyAPI Credentials</h1>
+  <div class="providers" id="providers"></div>
+  <div class="instructions">
+    <strong>How to use:</strong><br>
+    1. Visit the provider website<br>
+    2. Click the floating "Copy to .env" button<br>
+    3. Paste into your .env.local
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>

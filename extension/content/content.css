@@ -1,0 +1,47 @@
+#myapi-copy-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 999999;
+  padding: 10px 16px;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  transition: all 0.2s ease;
+}
+
+#myapi-copy-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+#myapi-copy-btn:active {
+  transform: translateY(0);
+}
+
+#myapi-copy-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Provider specific colors */
+.myapi-btn-aws {
+  background: #FF9900 !important;
+}
+
+.myapi-btn-chatgpt {
+  background: #10a37f !important;
+}
+
+.myapi-btn-claude {
+  background: #dc2626 !important;
+}
+
+.myapi-btn-kilocode {
+  background: #8b5cf6 !important;
+}
