@@ -1,0 +1,38 @@
+{
+  "name": "ai-dashboard",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "engines": {
+    "node": ">=22 <25"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "test": "tsx __tests__/all.test.ts",
+    "lint": "eslint . --ignore-pattern .kilo --ignore-pattern .agent --ignore-pattern .agents"
+  },
+  "dependencies": {
+    "lucide-react": "^1.21.0",
+    "next": "^16.1.7",
+    "next-themes": "^0.4.6",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "swr": "^2.3.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@tailwindcss/postcss": "^4.3.1",
+    "@types/node": "^26.0.1",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "eslint": "^10.1.0",
+    "globals": "^17.7.0",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^4.3.1",
+    "tsx": "^4.22.4",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.58.0"
+  }
+}

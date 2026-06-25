@@ -1,0 +1,68 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# env files — never commit secrets
+.env
+.env.local
+.env*.local
+.env.vercel*
+
+# misc
+.DS_Store
+*.pem
+npm-debug.log*
+ROADMAP.md
+skills-lock.json
+directives/
+
+
+# Agent specific local files
+.agents/venv/
+.claude/settings.local.json
+CLAUDE.md
+.agents
+.claude
+.agent
+
+# Kilo CLI specific files (if not part of project)
+.kilo/
+.kilo/node_modules/
+.kilo/package-lock.json
+.kilo/bun.lock
+
+# Sisyphem files
+.sisyphus/
+
+# IDEs
+.vscode/
+.idea/
+*.har
+.vercel
+*.tsbuildinfo
+
+# MemPalace per-project files (issue #185)
+mempalace.yaml
+entities.json
+
+# Sensitive credential files
+aws_cookies.json
+cookies.txt
+get_cookies.txt
+.env.vercel.prod
+
+# Local debugging artifacts
+one_dump.html
+scratch_*.js
+test_auth.js
+test-api.ts
+test.ts
+eslint_errors.log

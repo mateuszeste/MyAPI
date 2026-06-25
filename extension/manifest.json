@@ -1,0 +1,88 @@
+{
+  "manifest_version": 3,
+  "name": "MyAPI Credentials",
+  "version": "0.2.0",
+  "description": "Extract AI provider credentials for MyAPI dashboard. One-click copy to .env.local",
+  "icons": {
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+  "permissions": [
+    "cookies",
+    "activeTab",
+    "scripting",
+    "storage"
+  ],
+  "host_permissions": [
+    "https://claude.ai/*",
+    "https://chatgpt.com/*",
+    "https://ollama.com/*",
+    "https://openrouter.ai/*",
+    "https://app.kilo.ai/*",
+    "https://one.google.com/*",
+    "https://*.google.com/*",
+    "https://*.amazon.com/*",
+    "https://*.aws.amazon.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://claude.ai/*"],
+      "js": ["content/claude.js"],
+      "css": ["content/content.css"],
+      "run_at": "document_end"
+    },
+    {
+      "matches": ["https://chatgpt.com/*"],
+      "js": ["content/chatgpt.js"],
+      "css": ["content/content.css"],
+      "run_at": "document_end"
+    },
+    {
+      "matches": ["https://ollama.com/*"],
+      "js": ["content/ollama.js"],
+      "css": ["content/content.css"],
+      "run_at": "document_end"
+    },
+    {
+      "matches": ["https://openrouter.ai/*"],
+      "js": ["content/openrouter.js"],
+      "css": ["content/content.css"],
+      "run_at": "document_end"
+    },
+    {
+      "matches": ["https://app.kilo.ai/*"],
+      "js": ["content/kilocode.js"],
+      "css": ["content/content.css"],
+      "run_at": "document_end"
+    },
+    {
+      "matches": ["https://one.google.com/*"],
+      "js": ["content/googleone.js"],
+      "css": ["content/content.css"],
+      "run_at": "document_end"
+    },
+    {
+      "matches": ["https://*.aws.amazon.com/*", "https://*.amazon.com/*"],
+      "js": ["content/aws.js"],
+      "css": ["content/content.css"],
+      "run_at": "document_end"
+    }
+  ],
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "48": "icons/icon-48.png"
+    },
+    "default_title": "MyAPI Credentials"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["content/chatgpt-inject.js"],
+      "matches": ["https://chatgpt.com/*"]
+    }
+  ]
+}
