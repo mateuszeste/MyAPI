@@ -20,8 +20,7 @@
     "https://openrouter.ai/*",
     "https://app.kilo.ai/*",
     "https://one.google.com/*",
-    "https://*.google.com/*",
-    "https://*.amazon.com/*",
+    "https://*.console.aws.amazon.com/*",
     "https://*.aws.amazon.com/*"
   ],
   "background": {
@@ -66,7 +65,7 @@
       "run_at": "document_end"
     },
     {
-      "matches": ["https://*.aws.amazon.com/*", "https://*.amazon.com/*"],
+      "matches": ["https://*.aws.amazon.com/*", "https://*.console.aws.amazon.com/*"],
       "js": ["content/aws.js"],
       "css": ["content/content.css"],
       "run_at": "document_end"
