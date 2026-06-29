@@ -13,7 +13,7 @@ function timingSafeEqual(a: string, b: string): boolean {
   return result === 0 && a.length === b.length;
 }
 
-export function middleware(req: NextRequest) {
+export function proxy(req: NextRequest) {
   const basicAuth = req.headers.get('authorization');
 
   // If password isn't configured in environment:
