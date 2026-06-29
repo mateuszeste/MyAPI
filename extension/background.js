@@ -46,7 +46,14 @@ async function extractCookies(provider) {
   }
 
   const query = config.url ? { url: config.url } : { domain: config.domain };
+  if (provider === "googleone") {
+    query.name = "SAPISID";
+  }
   const cookies = await chrome.cookies.getAll(query);
+  if (chrome.runtime.lastError) {
+    console.warn("Cookie access denied for", provider, ":", chrome.runtime.lastError.message);
+    return { cookies: {}, config };
+  }
 
   const cookieMap = {};
   cookies.forEach((cookie) => {
@@ -99,11 +106,13 @@ function formatEnvSnippet(provider, cookieData, jwtToken = null) {
       lines.push(`KILO_SESSION_COOKIE="${allCookies}"`);
     }
   } else if (provider === "googleone") {
-    const allCookies = Object.entries(cookieData)
+    const googleOneNames = ["SAPISID", "APISID", "SSID", "HSID"];
+    const filteredCookies = Object.entries(cookieData)
+      .filter(([name]) => googleOneNames.includes(name))
       .map(([name, value]) => `${name}=${value}`)
       .join("; ");
-    if (allCookies) {
-      lines.push(`GOOGLE_ONE_COOKIES="${allCookies}"`);
+    if (filteredCookies) {
+      lines.push(`GOOGLE_ONE_COOKIES="${filteredCookies}"`);
     }
   } else if (provider === "aws") {
     const allCookies = Object.entries(cookieData)
