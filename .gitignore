@@ -66,3 +66,12 @@ test_auth.js
 test-api.ts
 test.ts
 eslint_errors.log
+
+# Git filter-repo and history rewrite backups
+/.git.backup-pre-rewrite/
+
+# Agent execution environment metadata
+/.omo/
+
+# Local security/audit reports
+/security_audit_report.md
