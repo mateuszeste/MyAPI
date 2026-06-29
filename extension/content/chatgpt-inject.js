@@ -10,7 +10,7 @@
           auth = (h instanceof Headers) ? h.get('authorization') : (h['Authorization'] || h['authorization']);
         }
         if (auth && auth.startsWith('Bearer ')) {
-          window.postMessage({ type: 'MYAPI_JWT', jwt: auth.substring(7) }, '*');
+          window.postMessage({ type: 'MYAPI_JWT', jwt: auth.substring(7) }, window.location.origin);
         }
       }
     } catch(_) {}
