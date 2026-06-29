@@ -227,3 +227,7 @@ If clipboard doesn't work, a dialog will appear with the text to copy manually.
 | Kilo Code | `KILO_SESSION_COOKIE` |
 
 The extension copies snippets on demand and does not persist full generated credential snippets in extension storage.
+
+## License
+
+This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
